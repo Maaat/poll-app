@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+	h1=title
+
+	form#createPoll(method="post",action="add")
+		div.row
+			|Name:
+			input(name="name")
+		div.row
+			input(type="submit" value="Submit")
