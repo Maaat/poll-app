@@ -1,7 +1,6 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-  var PollOption = sequelize.define("PollOption", {});
 
   var Option = sequelize.define("Option", {
     name: {type: DataTypes.STRING, allowNull: false},
@@ -9,8 +8,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Option.belongsToMany(models.Poll, {through: PollOption});
-        Option.hasMany(models.Vote);
+        Option.belongsTo(models.Poll);
+        Option.hasMany(models.OptionVote);
       }
     }
   });

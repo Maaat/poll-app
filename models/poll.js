@@ -9,7 +9,6 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         Poll.belongsTo(models.User);
-        Poll.belongsTo(models.Round);
         Poll.hasMany(models.Option);
       }
     }
