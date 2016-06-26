@@ -1,7 +1,11 @@
 doctype html
-html
+html(ng-app="pollApp")
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js")
+    script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js")
+    script(src="/javascripts/app/app.js")
+    block scripts
   body
     block content

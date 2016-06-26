@@ -1,11 +1,29 @@
 extends ../layout
 
+block scripts
+	script(src="/javascripts/app/controllers/createPollCtrl.js")
+
 block content
 	h1=title
 
-	form#createPoll(method="post",action="add")
+	form#createPoll(method="post",action="add",novalidate,ng-controller="createPollCtrl",ng-submit="submit()")
 		div.row
-			|Name:
-			input(name="name")
+			p Poll name:
+			input(ng-model="poll.name", ng-required="true")
 		div.row
+			p Poll description:
+			input(ng-model="poll.description")
+		div.row
+			h2 Options
+			ul.options
+				li(ng-repeat="option in poll.Options")
+					p Name:
+					input(ng-model="option.name" ng-required="option.description.length>0")
+					p Description:
+					input(ng-model="option.description")
+					button(type="button",ng-click="removeOption(option)") Remove
+
+				li: button(type="button",ng-click="addOption()") Add option
+		div.row
+			input(type="hidden" name="jsonPoll")
 			input(type="submit" value="Submit")

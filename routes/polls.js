@@ -22,16 +22,19 @@ router.get('/create', function(req,res) {
 
 //add poll
 router.post('/add', function(req,res) {
-	models.Poll.create({
-		name: req.body.name
-	}).then(function(poll) {
+	console.log(JSON.stringify(req.body));
+
+	var poll = JSON.parse(req.body.jsonPoll);
+	console.log(JSON.stringify(poll));
+
+	models.Poll.create(poll, {include: [models.Option]}).then(function(poll) {
 		res.redirect(poll.id);
 	});
 });
 
 //poll details page
 router.get('/:pollId', function(req,res) {
-	models.Poll.findById(req.params.pollId)
+	models.Poll.findById(req.params.pollId, {include: [models.Option]})
 	.then(function(poll){
 		res.render('polls/poll', {
 			poll: poll
