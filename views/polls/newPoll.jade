@@ -1,12 +1,12 @@
 extends ../layout
 
 block scripts
-	script(src="/javascripts/app/controllers/createPollCtrl.js")
+	script(src="/javascripts/app/controllers/newPollCtrl.js")
 
 block content
 	h1=title
 
-	form#createPoll(method="post",action="add",novalidate,ng-controller="createPollCtrl",ng-submit="submit()")
+	form#newPoll(method="post",action="add",novalidate,ng-controller="newPollCtrl",ng-submit="submit()")
 		div.row
 			p Poll name:
 			input(ng-model="poll.name", ng-required="true")

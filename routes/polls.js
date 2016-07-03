@@ -14,9 +14,9 @@ router.get('/', function(req, res, next) {
 });
 
 //poll creation page
-router.get('/create', function(req,res) {
-	res.render('polls/createPoll', {
-		title: 'Create Poll'
+router.get('/new', function(req,res) {
+	res.render('polls/newPoll', {
+		title: 'New Poll'
 	});
 });
 

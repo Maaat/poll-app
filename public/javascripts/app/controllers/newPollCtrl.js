@@ -1,4 +1,4 @@
-app.controller('createPollCtrl', [
+app.controller('newPollCtrl', [
 	'$scope',
 	function($scope) {
 		$scope.poll = {
@@ -25,6 +25,6 @@ app.controller('createPollCtrl', [
 		}
 
 		$scope.submit = function() {
-			$('#createPoll :input[name=jsonPoll]').val(JSON.stringify($scope.poll));
+			$('#newPoll :input[name=jsonPoll]').val(JSON.stringify($scope.poll));
 		}
 }]);
