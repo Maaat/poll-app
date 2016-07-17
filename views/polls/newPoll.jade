@@ -1,29 +1,38 @@
 extends ../layout
 
 block scripts
-	script(src="/javascripts/app/controllers/newPollCtrl.js")
+	script(src="/javascripts/controllers/newPollCtrl.js")
 
 block content
 	h1=title
-
-	form#newPoll(method="post",action="add",novalidate,ng-controller="newPollCtrl",ng-submit="submit()")
-		div.row
-			p Poll name:
-			input(ng-model="poll.name", ng-required="true")
-		div.row
-			p Poll description:
-			input(ng-model="poll.description")
-		div.row
-			h2 Options
-			ul.options
-				li(ng-repeat="option in poll.Options")
-					p Name:
-					input(ng-model="option.name" ng-required="option.description.length>0")
-					p Description:
-					input(ng-model="option.description")
-					button(type="button",ng-click="removeOption(option)") Remove
-
-				li: button(type="button",ng-click="addOption()") Add option
-		div.row
+	form#newPoll.form-horizontal(method="post",action="add",novalidate,ng-controller="newPollCtrl",ng-submit="submit()")
+		div.form-group
+			label.col-sm-2.control-label Poll name:
+			div.col-sm-8
+				input.form-control(ng-model="poll.name",ng-required="true",placeholder="Poll name")
+		div.form-group
+			label.col-sm-2.control-label Poll description:
+			div.col-sm-8
+				textarea.form-control(ng-model="poll.description",placeholder="Poll description")
+		div.form-group
+			h3.col-sm-2.control-label Options:
+			div.col-sm-8
+				ul.list-group
+					li.list-group-item(ng-repeat="option in poll.Options")
+						div.form-group
+							label.col-sm-2.control-label Name:
+							div.col-sm-8
+								input.form-control(ng-model="option.name",ng-required="option.description.length>0")
+							div.col-sm-2
+								button.form-control(type="button",ng-click="removeOption(option)") Remove
+						div.form-group
+							label.col-sm-2.control-label Description:
+							div.col-sm-8
+								input.form-control(ng-model="option.description")
+					li.list-group-item
+						button.form-control(type="button",ng-click="addOption()") Add option
+		div.form-group
 			input(type="hidden" name="jsonPoll")
-			input(type="submit" value="Submit")
+			div.col-sm-2
+			div.col-sm-8
+				input.form-control(type="submit" value="Submit")

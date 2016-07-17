@@ -2,25 +2,15 @@ app.controller('newPollCtrl', [
 	'$scope',
 	function($scope) {
 		$scope.poll = {
-			name: "",
-			Options: [
-				{
-					name: "",
-					description: ""
-				},
-				{
-					name: "",
-					description: ""
-				}
-			]
+			Options: [{},{}]
 		};
 
 		$scope.addOption = function() {
-			$scope.poll.Options.push({name:"", description:""});
+			$scope.poll.Options.push({});
 		};
 
 		$scope.removeOption = function(option) {
-			$scope.poll.Options.splice(option,1);
+			$scope.poll.Options.splice($scope.poll.Options.indexOf(option),1);
 			if ($scope.poll.Options.length<1) $scope.addOption();
 		}
 

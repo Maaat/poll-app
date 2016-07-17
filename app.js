@@ -5,11 +5,16 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var app = express();
+
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 var routes = require('./routes/index');
 var polls = require('./routes/polls');
 var users = require('./routes/users');
 
-var app = express();
+var globalFunctions = require('./globalFunctions.js');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

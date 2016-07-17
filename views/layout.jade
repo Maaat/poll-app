@@ -2,10 +2,13 @@ doctype html
 html(ng-app="pollApp")
   head
     title= title
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js")
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.js")
+    script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
     script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js")
-    script(src="/javascripts/app/app.js")
+    script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-resource.min.js")
+    script(src="/javascripts/app.js")
     block scripts
   body
     block content

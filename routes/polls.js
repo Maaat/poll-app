@@ -4,13 +4,15 @@ var models = require('../models');
 
 /* GET polls listing. */
 router.get('/', function(req, res, next) {
-	models.Poll.findAll(
-		).then(function(polls) {
-		res.render('polls', {
-			title: 'Polls',
-			polls: polls
+	models.Poll.findAll()
+		.then(function(polls) {
+			polls = restrict(polls,['name','description']);
+
+			res.render('polls/polls', {
+				title: 'Polls',
+				polls: polls
+			});
 		});
-	});
 });
 
 //poll creation page
