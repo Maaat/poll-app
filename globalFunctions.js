@@ -4,6 +4,8 @@
 //		restrict(polls, ['name','description'])
 // 		restrict(polls, ['name', Options: ['name']]) //restrict the fields on a foreign key object/array
 GLOBAL.restrict = function(obj, attributes) {
+	if (typeof obj == 'undefined') return obj;
+
 	var restrictedObj;
 
 	switch(obj.constructor) {

@@ -6,7 +6,7 @@ var models = require('../models');
 router.get('/', function(req, res, next) {
 	models.Poll.findAll()
 		.then(function(polls) {
-			polls = restrict(polls,['name','description']);
+			polls = restrict(polls,['id','name','description','createdAt','closeTime','closedManually']);
 
 			res.render('polls/polls', {
 				title: 'Polls',
