@@ -1,22 +1,25 @@
 app.controller('userCtrl', [
-	'$scope',
-	function($scope, $mdDialog, $mdMedia) {
+	'$scope', '$uibModal',
+	function($scope, $uibModal) {
 		if (typeof user != 'undefined') $scope.user=user;
 
-		$scope.status = '  ';
-		$scope.showLogin = function(ev) {
-			var login = $mdDialog.prompt()
-				.title('Log in')
-				.textContent('Log in to continue')
-				.placeholder('placeholder')
-				.ariaLabel('aria label')
-				.targetEvent(ev)
-				.ok('Log in')
-				.cancel('Cancel');
-			$mdDialog.show(confirm).then(function(result) {
-				$scope.status='confirmed';
-			}, function() {
-				$scope.status='did not log in';
+		$scope.showLogin = function() {
+			$uibModal.open({
+				templateUrl: 'loginForm.html',
+				backdrop: true,
+				windowClass: 'modal',
+				size: 'lg',
+				controller: function($scope, $uibModalInstance) {
+					$scope.createAccount=function() {
+						alert("create");
+					}
+					$scope.logIn=function() {
+						alert("log in");
+					}
+				},
+				resolve: {
+
+				}
 			});
 		};
 	}
@@ -25,8 +28,11 @@ app.controller('userCtrl', [
 app.directive('loginRequired', function() {
 	return function(scope, element, attrs) {
 		$(element).click(function() {
-
-			return false;
+			if (typeof scope.user == 'undefined') {
+				scope.showLogin();
+				return false;
+			}
+			return true;
 		});
 	};
 });

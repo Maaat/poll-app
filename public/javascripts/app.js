@@ -1,1 +1,1 @@
-var app = angular.module('pollApp', ['ngMaterial']);
+var app = angular.module('pollApp', ['ui.bootstrap']);
