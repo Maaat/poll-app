@@ -7,6 +7,10 @@ nav.navbar {
 	border: none;
 }
 
+.btn-primary[disabled] {
+	background-color: #337ab7;
+}
+
 a {
 	color: #00B7FF;
 }

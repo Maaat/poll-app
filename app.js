@@ -40,7 +40,8 @@ passport.use(new Strategy(
       ]
     }).then(function(user) {
       if (!user) { return cb(null, false); }
-      if (user.password != password) { return cb(null, false); }
+      if (user.Login.password != password) { return cb(null, false); }
+      return cb(null, user);
     });
   }));
 
@@ -56,8 +57,7 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(id, cb) {
-  db.users.findById(id, function (err, user) {
-    if (err) { return cb(err); }
+  models.User.findById(id).then(function(user) {
     cb(null, user);
   });
 });
@@ -75,13 +75,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressSession({secret:'asdf', resave:false, saveUninitialized:false}));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 //supply logged in user object to every jade template
 app.use(function(req,res,next){
   res.locals.user = restrict(req.user, ['id', 'name']);
   next();
 });
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/', routes);
 app.use('/polls', polls)

@@ -24,10 +24,7 @@ router.get('/new', function(req,res) {
 
 //add poll
 router.post('/add', function(req,res) {
-	console.log(JSON.stringify(req.body));
-
 	var poll = JSON.parse(req.body.jsonPoll);
-	console.log(JSON.stringify(poll));
 
 	models.Poll.create(poll, {include: [models.Option]}).then(function(poll) {
 		res.redirect(poll.id);
