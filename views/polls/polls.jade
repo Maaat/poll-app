@@ -18,7 +18,7 @@ block content
 		div.row: div.col-xs-12: hr
 
 		table.table.table-bordered(ng-switch="polls.length")
-			tr(ng-switch-when="0"): td No polls in the database. Would you like to #[a(href="polls/new") Create one?]
+			tr(ng-switch-when="0"): td No polls found.
 			tr(ng-switch-default)
 				th(width="60%") Name
 				th(width="20%") Start

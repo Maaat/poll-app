@@ -5,7 +5,7 @@ block scripts
 
 block content
 	h1=title
-	form#newPoll.form-horizontal(method="post",action="add",novalidate,ng-controller="newPollCtrl",ng-submit="submit()")
+	form#newPoll.form-horizontal(name="newPollForm",method="post",action="add",novalidate,ng-controller="newPollCtrl",ng-submit="submit()")
 		div.form-group
 			label.col-sm-2.control-label Poll name:
 			div.col-sm-8
