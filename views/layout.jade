@@ -76,9 +76,16 @@ html(ng-app="pollApp",ng-controller="userCtrl")
                 ul.nav.navbar-nav
                     li: a(href="/polls") Polls
                 ul.nav.navbar-nav.navbar-right(ng-if="user")
-                    li: a(login-required, href="/users/{{user.id}}") {{user.name}}
+                    li: a(login-required, href="/users/{{user.name}}") {{user.name}}
                     li: a(ng-click="logout()", href="#") Log out
                 ul.nav.navbar-nav.navbar-right(ng-if="!user")
                     li: a(login-required, href="/login") Log in
         div.container
+            if displayError
+                div.alert.alert-danger
+                    if displayError.constructor==String
+                        =displayError
+                    else if displayError.constructor==Array
+                        each e in displayError
+                            p=e
             block content

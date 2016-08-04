@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
 //poll creation page
 router.get('/new', function(req,res) {
 	res.render('polls/newPoll', {
-		title: 'New Poll'
+		title: 'New Poll',
 	});
 });
 
@@ -27,8 +27,25 @@ router.get('/new', function(req,res) {
 router.post('/add', function(req,res) {
 	var poll = JSON.parse(req.body.jsonPoll);
 
-	models.Poll.create(poll, {include: [models.Option]}).then(function(poll) {
+	if (!poll.Options || poll.Options.length<2) { //this should be validated by sequelize.
+		res.render('polls/newPoll', {
+			title: 'New Poll',
+			poll: poll,
+			displayError: "A new poll must have at least two options."
+		});
+		return;
+	}
+
+	poll.UserId = req.user.id;
+
+	models.Poll.create(poll, {include: [{model: models.Option, required: true}]}).then(function(poll) {
 		res.redirect(poll.id);
+	}).catch(function(err) {
+		res.render('polls/newPoll', {
+			title: 'New Poll',
+			poll: poll,
+			displayError: err.message
+		});
 	});
 });
 

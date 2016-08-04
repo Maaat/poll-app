@@ -1,9 +1,10 @@
 app.controller('newPollCtrl', [
 	'$scope',
 	function($scope) {
-		$scope.poll = {
-			Options: [{},{}]
-		};
+
+		$scope.poll = (typeof poll == 'undefined')
+		? { Options: [{},{}] }
+		: poll;
 
 		$scope.addOption = function() {
 			$scope.poll.Options.push({});
@@ -11,10 +12,10 @@ app.controller('newPollCtrl', [
 
 		$scope.removeOption = function(option) {
 			$scope.poll.Options.splice($scope.poll.Options.indexOf(option),1);
-			if ($scope.poll.Options.length<1) $scope.addOption();
+			if ($scope.poll.Options.length<2) $scope.addOption();
 		}
 
 		$scope.submit = function() {
-			$('#newPoll :input[name=jsonPoll]').val(JSON.stringify($scope.poll));
+			$('#newPollForm :input[name=jsonPoll]').val(JSON.stringify($scope.poll));
 		}
 }]);
