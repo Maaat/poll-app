@@ -1,15 +1,15 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-  var Login = sequelize.define("Login", {
-    password: DataTypes.STRING
+  var LoginInfo = sequelize.define("LoginInfo", {
+    passwordHash: DataTypes.STRING(60)
   }, {
     classMethods: {
       associate: function(models) {
-        Login.belongsTo(models.User);
+        LoginInfo.belongsTo(models.User);
       }
     }
   });
 
-  return Login;
+  return LoginInfo;
 };

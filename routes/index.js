@@ -9,6 +9,18 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+//login page in case a user tries to go to a login-required page without encountering the login dialog.
+router.get('/login', function(req,res,next) {
+	if (req.user) {
+		res.redirect(req.query.dest || '/');
+		return;
+	}
+	res.render('login', {
+		title: 'Log in',
+		dest: req.query.dest
+	});
+});
+
 //ajax login
 router.post('/login', function(req,res,next) {
 	passport.authenticate('local', function(err, user, info) {

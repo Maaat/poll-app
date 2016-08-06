@@ -1,30 +1,30 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-var Sequelize = require('sequelize');
+var sequelize = require('sequelize');
+var ensureLoggedIn = require('../ensureLoggedIn');
 
 /* GET polls listing. */
 router.get('/', function(req, res, next) {
-	models.Poll.findAll()
-		.then(function(polls) {
-			polls = restrict(polls,['id','name','description','createdAt','closeTime','closedManually']);
-
-			res.render('polls/polls', {
-				title: 'Polls',
-				polls: polls
-			});
+	models.Poll.findAll({
+		include: [models.User]
+	}).then(function(polls) {
+		res.render('polls/polls', {
+			title: 'Polls',
+			polls: polls
 		});
+	});
 });
 
 //poll creation page
-router.get('/new', function(req,res) {
+router.get('/new', ensureLoggedIn, function(req,res,next) {
 	res.render('polls/newPoll', {
 		title: 'New Poll',
 	});
 });
 
 //add poll
-router.post('/add', function(req,res) {
+router.post('/add', ensureLoggedIn, function(req,res,next) {
 	var poll = JSON.parse(req.body.jsonPoll);
 
 	if (!poll.Options || poll.Options.length<2) { //this should be validated by sequelize.
@@ -50,7 +50,7 @@ router.post('/add', function(req,res) {
 });
 
 //poll details view for voting and viewing results
-router.get('/:pollId', function(req,res) {
+router.get('/:pollId', function(req,res,next) {
 	var optionsInclude = {model: models.Option};
 	//if the user is logged in, include that user's vote on the option that they voted for.
 	if (req.user) {
@@ -66,6 +66,8 @@ router.get('/:pollId', function(req,res) {
 		include: [optionsInclude]
 	}).then(function(poll){
 
+		if (!poll) return next();
+
 		//if the user has voted then get the vote counts and render the results page.
 		if (req.user
 			&& poll.Options.some(function(option) {
@@ -80,7 +82,7 @@ router.get('/:pollId', function(req,res) {
 
 			//get vote counts of all of this poll's options
 			models.OptionVote.findAll({
-				attributes: ['OptionId', [Sequelize.fn('count', Sequelize.col('OptionId')), 'voteCount']],
+				attributes: ['OptionId', [sequelize.fn('count', sequelize.col('OptionId')), 'voteCount']],
 				where: {
 					'OptionId': {in: optionIds}
 				},
@@ -117,7 +119,7 @@ router.get('/:pollId', function(req,res) {
 });
 
 //place a vote on a poll
-router.post('/:pollId/vote', function(req,res,next) {
+router.post('/:pollId/vote', ensureLoggedIn, function(req,res,next) {
 	var userId = req.user.id;
 	var pollId = req.params.pollId;
 	var optionId = req.body.optionId;
@@ -144,7 +146,6 @@ router.post('/:pollId/vote', function(req,res,next) {
 		}
 		//ensure that this user has not already voted
 		else if (poll.Options.some(function(option) {return option.OptionVotes.length>0})) {
-			console.log(JSON.stringify(poll));
 			res.status(400).send("You have already voted in this poll.");
 		}
 		else {

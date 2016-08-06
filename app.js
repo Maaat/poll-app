@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
+var bcrypt = require('bcrypt');
 
 var expressSession = require('express-session');
 
@@ -23,12 +24,7 @@ var users = require('./routes/users');
 
 var globalFunctions = require('./globalFunctions.js');
 
-// Configure the local strategy for use by Passport.
-//
-// The local strategy require a `verify` function which receives the credentials
-// (`username` and `password`) submitted by the user.  The function must verify
-// that the password is correct and then invoke `cb` with a user object, which
-// will be set at `req.user` in route handlers after authentication.
+//passport's user authentication strategy
 passport.use(new Strategy(
   function(username, password, cb) {
     models.User.findOne({
@@ -36,22 +32,15 @@ passport.use(new Strategy(
         name: username
       },
       include: [
-        {model: models.Login, required: true}
+        {model: models.LoginInfo, required: true}
       ]
     }).then(function(user) {
       if (!user) { return cb(null, false); }
-      if (user.Login.password != password) { return cb(null, false); }
+      if (!bcrypt.compareSync(password, user.LoginInfo.passwordHash)) { return cb(null, false); }
       return cb(null, user);
     });
   }));
 
-// Configure Passport authenticated session persistence.
-//
-// In order to restore authentication state across HTTP requests, Passport needs
-// to serialize users into and deserialize users out of the session.  The
-// typical implementation of this is as simple as supplying the user ID when
-// serializing, and querying the user record by ID from the database when
-// deserializing.
 passport.serializeUser(function(user, cb) {
   cb(null, user.id);
 });
@@ -80,7 +69,7 @@ app.use(passport.session());
 
 //supply logged in user object to every jade template
 app.use(function(req,res,next){
-  res.locals.user = restrict(req.user, ['id', 'name']);
+  res.locals.currentUser = restrict(req.user, ['id', 'name']);
   next();
 });
 
