@@ -21,6 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         Poll.belongsTo(models.User, { foreignKey: { allowNull: false } });
+        Poll.belongsTo(models.Discussion, { foreignKey: { allowNull: false } });
         Poll.hasMany(models.Option);
       }
     }

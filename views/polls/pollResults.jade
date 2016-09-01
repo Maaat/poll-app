@@ -6,7 +6,7 @@ block head
 	script(src="/javascripts/controllers/pollCtrl.js")
 
 block content
-	div(ng-controller="pollCtrl")
+	div.col-xs-12(ng-controller="pollCtrl")
 		h1 {{poll.name}}
 		div.form-horizontal.col-xs-8
 			ul.list-group
@@ -17,3 +17,4 @@ block content
 							h2 Votes: {{option.voteCount}}
 					div.form-group(ng-if="option.description")
 						p.col-xs-12 {{option.description}}
+	include ../discussions/discussion

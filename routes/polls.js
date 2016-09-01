@@ -26,6 +26,7 @@ router.get('/new', ensureLoggedIn, function(req,res,next) {
 //add poll
 router.post('/add', ensureLoggedIn, function(req,res,next) {
 	var poll = JSON.parse(req.body.jsonPoll);
+	poll = restrict(poll, ['name', 'description', 'Options']);
 
 	if (!poll.Options || poll.Options.length<2) { //this should be validated by sequelize.
 		res.render('polls/newPoll', {
@@ -37,8 +38,13 @@ router.post('/add', ensureLoggedIn, function(req,res,next) {
 	}
 
 	poll.UserId = req.user.id;
+	poll.DiscussionId = -1;
+	poll.Discussion = {};
 
-	models.Poll.create(poll, {include: [{model: models.Option, required: true}]}).then(function(poll) {
+	models.Poll.create(poll, {include: [
+		{model: models.Option, required: true},
+		{model: models.Discussion, required: true}
+	]}).then(function(poll) {
 		res.redirect(poll.id);
 	}).catch(function(err) {
 		res.render('polls/newPoll', {
@@ -102,10 +108,47 @@ router.get('/:pollId', function(req,res,next) {
 					if (!option.voteCount) option.voteCount=0;
 				}
 
-				res.render('polls/pollResults', {
-					title: poll.name,
-					poll: poll
+				//get the poll discussion with comments
+				models.Discussion.findById(poll.DiscussionId, {
+					include: [{
+						model: models.Comment,
+						order: 'id ASC',
+						include: [{
+							model: models.User,
+							attributes: ['id', 'name']
+						}]
+					}]
+				}).then(function(discussion) {
+
+					//organize the comments into a reply tree structure
+					discussion = discussion.get({plain:true});
+					var commentsMap = {};
+					var organizedComments = [];
+					for (var comment of discussion.Comments) {
+
+						//map comments by id
+						commentsMap[comment.id] = comment;
+						
+						//add child comment list
+						comment.Comments = [];
+						
+						//if the comment is a reply to another comment then put it in the parent's child list.
+						if (comment.CommentId) commentsMap[comment.CommentId].Comments.push(comment);
+
+						//otherwise put it into the top level list
+						else organizedComments.push(comment);
+						
+					}
+					discussion.Comments = organizedComments;
+
+					res.render('polls/pollResults', {
+						title: poll.name,
+						poll: poll,
+						discussion: discussion
+					});
+					
 				});
+
 			});
 		}
 		else {

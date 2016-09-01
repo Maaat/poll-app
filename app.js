@@ -21,6 +21,8 @@ var models = require('./models');
 var routes = require('./routes/index');
 var polls = require('./routes/polls');
 var users = require('./routes/users');
+var discussions = require('./routes/discussions');
+var comments = require('./routes/comments');
 
 var globalFunctions = require('./globalFunctions.js');
 
@@ -74,8 +76,10 @@ app.use(function(req,res,next){
 });
 
 app.use('/', routes);
-app.use('/polls', polls)
+app.use('/polls', polls);
 app.use('/users', users);
+app.use('/discussions', discussions);
+app.use('/comments', comments);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

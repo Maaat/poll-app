@@ -1,0 +1,23 @@
+script.
+	var discussion = !{JSON.stringify(discussion)};
+script(src="/javascripts/controllers/discussionCtrl.js")
+
+script(id="comment.html",type="text/ng-template")
+	label {{comment.User.name}}
+	p {{comment.text}}
+	a.reply(ng-click="replyBox = true") reply
+	div(ng-if="replyBox")
+		div.alert.alert-danger(ng-if="error") {{error}}
+		textarea(ng-model="replyText")
+		button(type="button" ng-click="submitReply(comment,replyText);replyBox=false;")
+	ul(ng-if="comment.Comments")
+		li(ng-repeat="comment in comment.Comments" ng-include="'comment.html'")
+
+div.col-xs-12(ng-controller="discussionCtrl")
+	h2 Comments
+	ul
+		li(ng-scope)
+			div.alert.alert-danger(ng-if="error") {{error}}
+			textarea(ng-model="commentText")
+			button(type="button" ng-click="submitComment()") Submit
+		li(ng-repeat="comment in discussion.Comments" ng-include="'comment.html'")
