@@ -13,6 +13,9 @@ router.post('/:discussionId/comment', ensureLoggedIn, function(req,res,next) {
 	};
 
 	models.Comment.create(comment).then(function(comment) {
+		comment = comment.get({plain:true});
+		comment.User = req.user;
+		comment.Comments = [];
 		res.status(200).send({comment: comment});
 	}).catch(function (err) {
 		res.status(400).send({message: err.message});

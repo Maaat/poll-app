@@ -3,21 +3,32 @@ script.
 script(src="/javascripts/controllers/discussionCtrl.js")
 
 script(id="comment.html",type="text/ng-template")
-	label {{comment.User.name}}
-	p {{comment.text}}
-	a.reply(ng-click="replyBox = true") reply
-	div(ng-if="replyBox")
-		div.alert.alert-danger(ng-if="error") {{error}}
-		textarea(ng-model="replyText")
-		button(type="button" ng-click="submitReply(comment,replyText);replyBox=false;")
-	ul(ng-if="comment.Comments")
-		li(ng-repeat="comment in comment.Comments" ng-include="'comment.html'")
+	div.panel-heading.clearfix
+		a.pull-left(href="/users/{{comment.User.name}}") {{comment.User.name}}
+		div.pull-right {{comment.createdAt}}
+	div.panel-body
+		p {{comment.text}}
+		button.btn.btn-default(ng-click="comment.replyBox = !comment.replyBox" ng-show="!comment.replyBox" style="margin-bottom:10px") Reply
+		div.panel.panel-default(ng-if="comment.replyBox")
+			div.panel-heading.clearfix
+				label Reply
+				button.btn.btn-default.pull-right(ng-click="comment.replyBox = false") Cancel
+			div.panel-body
+				div.alert.alert-danger(ng-if="comment.error") {{comment.error}}
+				textarea.form-control(ng-model="comment.replyText" rows="4" ng-maxlength="40000")
+				button.form-control.btn.btn-default(type="button" ng-click="submitReply(comment);comment.replyBox=false;" ng-disabled="!comment.replyText || comment.replyText.length>40000") Submit
+		ul.list-unstyled(ng-if="comment.Comments")
+			li.panel.panel-default(ng-repeat="comment in comment.Comments | orderBy : '-createdAt'" ng-include="'comment.html'")
 
 div.col-xs-12(ng-controller="discussionCtrl")
 	h2 Comments
-	ul
-		li(ng-scope)
-			div.alert.alert-danger(ng-if="error") {{error}}
-			textarea(ng-model="commentText")
-			button(type="button" ng-click="submitComment()") Submit
-		li(ng-repeat="comment in discussion.Comments" ng-include="'comment.html'")
+	ul.list-unstyled
+		li.panel: button.btn.btn-default(ng-click="commentBox = !commentBox") New Comment
+		li.panel.panel-default(ng-if="commentBox")
+			div.panel-heading
+				label New Comment
+			div.panel-body
+				div.alert.alert-danger(ng-if="comment.error") {{comment.error}}
+				textarea.form-control(ng-model="$parent.commentText" rows="4" ng-maxlength="40000")
+				button.form-control.btn.btn-default(type="button" ng-click="submitComment()" ng-disabled="!$parent.commentText || $parent.commentText.length>40000") Submit
+		li.panel.panel-default(ng-repeat="comment in discussion.Comments | orderBy : '-createdAt'" ng-include="'comment.html'")

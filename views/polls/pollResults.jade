@@ -11,10 +11,9 @@ block content
 		div.form-horizontal.col-xs-8
 			ul.list-group
 				li.list-group-item(ng-repeat="option in poll.Options")
-					div.form-group
-						h2.col-xs-9 {{option.name}}
-						h2.col-xs-3
-							h2 Votes: {{option.voteCount}}
-					div.form-group(ng-if="option.description")
-						p.col-xs-12 {{option.description}}
+					div.container-fluid
+						div.row
+							h2.pull-left {{option.name}}
+							h2.pull-right Votes: {{option.voteCount}}
+						div.row(ng-if="option.description"): p {{option.description}}
 	include ../discussions/discussion

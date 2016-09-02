@@ -10,22 +10,24 @@ app.controller('discussionCtrl', [
 			};
 			$http.post('/discussions/'+discussion.id+'/comment', data)
 				.success(function(data) {
-					$scope.discussion.Comments.push({text: $scope.commentText, User: currentUser});
+					$scope.discussion.Comments.push(data.comment);
 					$scope.commentText="";
+					$scope.commentBox=false;
 				})
 				.error(function(data) {
 					$scope.error=data.message;
 				});
 		}
 
-		$scope.submitReply = function(comment, replyText) {
+		$scope.submitReply = function(comment) {
 			var data = {
-				replyText: replyText
+				replyText: comment.replyText
 			};
 			$http.post('/comments/'+comment.id+'/reply', data)
 				.success(function(data) {
-					comment.Comments.push({text: replyText, User: currentUser});
-					replyText="";
+					comment.Comments.push(data.comment);
+					comment.replyText="";
+					comment.replyBox=false;
 				})
 				.error(function(data) {
 					$scope.error=data.message;

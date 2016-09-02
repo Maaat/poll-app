@@ -46,6 +46,7 @@ router.get('/:username', function(req,res,next) {
 		if (!user) return next();
 
 		res.render('users/user', {
+			title: user.name,
 			user: restrict(user, ['id','name','Polls'])
 		});
 	});
