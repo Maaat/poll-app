@@ -120,31 +120,10 @@ router.get('/:pollId', function(req,res,next) {
 					}]
 				}).then(function(discussion) {
 
-					//organize the comments into a reply tree structure
-					discussion = discussion.get({plain:true});
-					var commentsMap = {};
-					var organizedComments = [];
-					for (var comment of discussion.Comments) {
-
-						//map comments by id
-						commentsMap[comment.id] = comment;
-						
-						//add child comment list
-						comment.Comments = [];
-						
-						//if the comment is a reply to another comment then put it in the parent's child list.
-						if (comment.CommentId) commentsMap[comment.CommentId].Comments.push(comment);
-
-						//otherwise put it into the top level list
-						else organizedComments.push(comment);
-						
-					}
-					discussion.Comments = organizedComments;
-
 					res.render('polls/pollResults', {
 						title: poll.name,
 						poll: poll,
-						discussion: discussion
+						discussion: discussion.getTreeDiscussion()
 					});
 					
 				});

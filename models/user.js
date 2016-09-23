@@ -16,6 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         User.hasOne(models.LoginInfo);
+        User.belongsTo(models.Discussion, { foreignKey: { allowNull: false } });
         User.hasMany(models.OptionVote);
         User.hasMany(models.Poll);
       }

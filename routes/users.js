@@ -18,10 +18,12 @@ router.post('/add', function(req,res,next) {
 		name: req.body.username,
 		LoginInfo: {
 			passwordHash: hash
-		}
+		},
+		Discussion: {},
+		DiscussionId: -1
 	};
 	
-	models.User.create(user, {include: [models.LoginInfo]}).then(function(user) {
+	models.User.create(user, {include: [models.LoginInfo, models.Discussion]}).then(function(user) {
 		res.send({status:200, message:"Account "+user.name+" created!"});
 	}).catch(function (err) {
 		if (err.name == "SequelizeUniqueConstraintError") {
@@ -37,7 +39,20 @@ router.post('/add', function(req,res,next) {
 //user page
 router.get('/:username', function(req,res,next) {
 	models.User.findOne({
-		include: [models.Poll],
+		include: [
+			models.Poll,
+			{
+				model: models.Discussion,
+				include: {
+					model: models.Comment,
+					order: 'id ASC',
+					include: [{
+						model: models.User,
+						attributes: ['id', 'name']
+					}]
+				}
+			}
+		],
 		where: sequelize.where(
 			sequelize.fn('lower', sequelize.col('name')),
 			req.params.username.toLowerCase()
@@ -47,7 +62,8 @@ router.get('/:username', function(req,res,next) {
 
 		res.render('users/user', {
 			title: user.name,
-			user: restrict(user, ['id','name','Polls'])
+			user: restrict(user, ['id','name','Polls','Discussion']),
+			discussion: user.Discussion.getTreeDiscussion()
 		});
 	});
 });

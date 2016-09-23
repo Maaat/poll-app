@@ -12,7 +12,7 @@ app.controller('discussionCtrl', [
 				.success(function(data) {
 					$scope.discussion.Comments.push(data.comment);
 					$scope.commentText="";
-					$scope.commentBox=false;
+					$scope.discussion.commentBox=false;
 				})
 				.error(function(data) {
 					$scope.error=data.message;
