@@ -45,7 +45,6 @@ router.get('/:username', function(req,res,next) {
 				model: models.Discussion,
 				include: {
 					model: models.Comment,
-					order: 'id ASC',
 					include: [{
 						model: models.User,
 						attributes: ['id', 'name']
