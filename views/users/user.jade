@@ -9,7 +9,7 @@ block head
 
 block content
 	div(ng-controller="userViewCtrl")
-		h1 {{user.name}}
+		h1.text-center {{user.name}}
 
 		h2 Polls
 		table.table.table-bordered(ng-switch="user.Polls.length")

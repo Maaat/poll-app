@@ -20,10 +20,10 @@ script(id="comment.html",type="text/ng-template")
 		ul.list-unstyled(ng-if="comment.Comments")
 			li.panel.panel-default(ng-repeat="comment in comment.Comments | orderBy : '-createdAt'" ng-include="'comment.html'")
 
-div.row(ng-controller="discussionCtrl")
+div(ng-controller="discussionCtrl")
 	h2 Comments
 	ul.list-unstyled
-		li.panel(ng-if="currentUser"): button.btn.btn-default(ng-click="discussion.commentBox = !discussion.commentBox") New Comment
+		li(ng-if="currentUser" ng-show="!discussion.commentBox" style="margin-bottom:20px"): button.btn.btn-default(ng-click="discussion.commentBox = !discussion.commentBox") New Comment
 		li.panel.panel-default(ng-if="discussion.commentBox")
 			div.panel-heading.clearfix
 				label New Comment

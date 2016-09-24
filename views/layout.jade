@@ -3,6 +3,7 @@ html(ng-app="pollApp",ng-controller="userCtrl")
     head
         title= title
         link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+        link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css")
         link(rel='stylesheet', href='/stylesheets/style.css')
         script(src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.js")
         script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
@@ -73,14 +74,26 @@ html(ng-app="pollApp",ng-controller="userCtrl")
     body
         nav.navbar.navbar-inverse
             div.container-fluid
-                a.navbar-brand(href="/") Poll App
-                ul.nav.navbar-nav
-                    li: a(href="/polls") Polls
-                ul.nav.navbar-nav.navbar-right(ng-if="currentUser")
-                    li: a(login-required, href="/users/{{currentUser.name}}") {{currentUser.name}}
-                    li: a(ng-click="logout()", href="javascript:window.location.href=window.location.href") Log out
-                ul.nav.navbar-nav.navbar-right(ng-if="!currentUser")
-                    li: a(login-required, href="javascript:window.location.href=window.location.href") Log in
+                div.navbar-header
+                    button.navbar-toggle(type="button" data-toggle="collapse" data-target="#navbar")
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                    a.navbar-brand(href="/") Poll App
+                div#navbar.collapse.navbar-collapse
+                    ul.nav.navbar-nav
+                        li: a(href="/polls") Polls
+                    ul.nav.navbar-nav.navbar-right(ng-if="currentUser")
+                        li: a(href="/users/{{currentUser.name}}")
+                            span.glyphicon.glyphicon-user
+                            |  {{currentUser.name}}
+                        li: a(ng-click="logout()", href="javascript:window.location.href=window.location.href")
+                            span.glyphicon.glyphicon-log-out
+                            |  Log out
+                    ul.nav.navbar-nav.navbar-right(ng-if="!currentUser")
+                        li: a(login-required, href="javascript:window.location.href=window.location.href")
+                            span.glyphicon.glyphicon-log-in
+                            |  Log in
         div.container
             if displayError
                 div.alert.alert-danger
