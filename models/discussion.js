@@ -21,27 +21,30 @@ module.exports = function(sequelize, DataTypes) {
     			return treeDiscussion;
     		}
 
+        //sort comments from oldest to newest. 
+        treeDiscussion.Comments = treeDiscussion.Comments.sort((a,b) => a.id-b.id);
+
     		var commentsMap = {};
-			var organizedComments = [];
-			for (var comment of treeDiscussion.Comments) {
+  			var organizedComments = [];
+  			for (var comment of treeDiscussion.Comments) {
 
-				//map comments by id
-				commentsMap[comment.id] = comment;
-				
-				//add child comment list
-				comment.Comments = [];
-				
-				//if the comment is a reply to another comment then put it in the parent's child list.
-				if (comment.CommentId) commentsMap[comment.CommentId].Comments.push(comment);
+  				//map comments by id
+  				commentsMap[comment.id] = comment;
+  				
+  				//add child comment list
+  				comment.Comments = [];
+  				
+  				//if the comment is a reply to another comment then put it in the parent's child list.
+  				if (comment.CommentId) commentsMap[comment.CommentId].Comments.push(comment);
 
-				//otherwise put it into the top level list
-				else organizedComments.push(comment);
-				
-			}
+  				//otherwise put it into the top level list
+  				else organizedComments.push(comment);
+  				
+  			}
 
-			treeDiscussion.Comments=organizedComments
+  			treeDiscussion.Comments=organizedComments
 
-			return treeDiscussion;
+  			return treeDiscussion;
     	}
     }
   });

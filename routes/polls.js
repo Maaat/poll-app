@@ -112,7 +112,6 @@ router.get('/:pollId', function(req,res,next) {
 				models.Discussion.findById(poll.DiscussionId, {
 					include: [{
 						model: models.Comment,
-						order: 'id ASC',
 						include: [{
 							model: models.User,
 							attributes: ['id', 'name']
