@@ -1,12 +1,5 @@
-extends ../layout
-
-block head
-	script.
-		var poll = !{JSON.stringify(poll)};
-	script(src="/javascripts/controllers/pollCtrl.js")
-
-block content
-	div.row(ng-controller="pollCtrl")
+div
+	div.row
 		h1.text-center {{poll.name}}
 		div.form-horizontal.col-xs-8.col-xs-offset-2
 			ul.list-group

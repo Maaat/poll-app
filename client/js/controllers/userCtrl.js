@@ -1,66 +1,67 @@
-app.controller('userCtrl', [
-	'$scope', '$http', '$uibModal',
-	function($scope, $http, $uibModal) {
-		if (typeof currentUser != 'undefined') $scope.currentUser=currentUser;
+function userCtrl($scope, $http, $uibModal, $state) {
+	
+	//check if we are logged in
+	$http.get('/api/users/currentUser')
+		.success(function(data) {
+			if (data.id) $scope.currentUser = data;
+		})
 
-		var dest = undefined;
-
-		$scope.showLogin = function(href) {
-			dest = href;
-			$uibModal.open({
-				templateUrl: 'loginForm.html',
-				backdrop: true,
-				windowClass: 'modal',
-				size: 'lg',
-				scope: $scope
-			});
-		};
-
-		$scope.createAccount=function() {
-			var data = JSON.stringify({
-				username: $scope.newUsername,
-				password: $scope.newPassword
-			});
-			$http.post('/users/add', data)
-				.success(function(data) {
-					$scope.accountCreated = data.message;
-				})
-				.error(function(data) {
-					$scope.accountCreationError = data.message;
-				});
-		};
-
-		$scope.login=function() {
-			var data = JSON.stringify({
-				username: $scope.username,
-				password: $scope.password
-			});
-			$http.post('/login', data)
-				.success(function(data) {
-					location = dest || window.location.href;
-				})
-				.error(function(data) {
-					$scope.loginError = data.message;
-				});
-		};
-
-		$scope.logout = function() {
-			$http.get('/logout')
-				.then(function(res) {
-					location.reload();
-				});
-		};
-	}
-]);
-
-app.directive('loginRequired', function() {
-	return function(scope, element, attrs) {
-		$(element).click(function() {
-			if (typeof scope.currentUser == 'undefined') {
-				scope.showLogin($(this).prop('href'));
-				return false;
-			}
-			return true;
+	var dest = undefined;
+	
+	$scope.showLogin = function(href) {
+		dest = href;
+		$uibModal.open({
+			templateUrl: 'loginForm.html',
+			backdrop: true,
+			windowClass: 'modal',
+			size: 'lg',
+			scope: $scope
 		});
 	};
-});
+
+	$scope.createAccount=function() {
+		var data = JSON.stringify({
+			username: $scope.newUsername,
+			password: $scope.newPassword
+		});
+		$http.post('/api/users/add', data)
+			.success(function(data) {
+				$scope.accountCreated = data;
+			})
+			.error(function(data) {
+				$scope.accountCreationError = data;
+			});
+	};
+
+	$scope.login=function() {
+		var data = JSON.stringify({
+			username: $scope.username,
+			password: $scope.password
+		});
+		$http.post('/api/login', data)
+			.success(function(data) {
+				if (dest) {
+					$state.go(dest);
+				}
+				else {
+					$state.reload();
+				}
+			})
+			.error(function(data) {
+				$scope.loginError = data;
+			});
+	};
+
+	$scope.logout = function() {
+		$http.get('/api/logout')
+			.success(function(data) {
+				$state.reload();
+			})
+			.error(function(data) {
+				$scope.$parent.displayError = data;
+			});
+	};
+}
+userCtrl.$inject = ['$scope','$http','$uibModal', '$state'];
+
+module.exports = userCtrl;

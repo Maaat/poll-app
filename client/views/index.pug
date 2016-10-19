@@ -2,8 +2,8 @@ doctype html
 html(ng-app="pollApp",ng-controller="userCtrl")
     head
         title Poll App
-        link(rel="stylesheet", href="/style/style.min.css")
-        script(src="/js/bundle.min.css")
+        link(rel="stylesheet", href="/style/style.css")
+        script(src="/js/bundle.js")
 
         script(id="loginForm.html",type="text/ng-template")
             div.modal-header.text-center
@@ -67,12 +67,12 @@ html(ng-app="pollApp",ng-controller="userCtrl")
                         span.icon-bar
                         span.icon-bar
                         span.icon-bar
-                    a.navbar-brand(href="/") Poll App
+                    a.navbar-brand(ui-sref="home") Poll App
                 div#navbar.collapse.navbar-collapse
                     ul.nav.navbar-nav
-                        li: a(href="/polls") Polls
+                        li: a(ui-sref="polls") Polls
                     ul.nav.navbar-nav.navbar-right(ng-if="currentUser")
-                        li: a(href="/users/{{currentUser.name}}")
+                        li: a(ui-sref="user({ name: {{currentUser.name}} })")
                             span.glyphicon.glyphicon-user
                             |  {{currentUser.name}}
                         li: a(ng-click="logout()", href="javascript:window.location.href=window.location.href")

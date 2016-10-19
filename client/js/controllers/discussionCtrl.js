@@ -1,6 +1,4 @@
-app.controller('discussionCtrl', [
-	'$scope', '$http',
-	function($scope, $http) {
+function discussionCtrl($scope, $http) {
 
 		$scope.discussion = discussion;
 
@@ -34,4 +32,7 @@ app.controller('discussionCtrl', [
 				});
 		}
 
-}]);
+}
+discussionCtrl.$inject = ['$scope','$http'];
+
+module.exports = discussionCtrl;

@@ -9,6 +9,15 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.get('/currentUser', (req,res,next) => {
+	if (typeof req.user != 'undefined') {
+		res.send(restrict(req.user, ['id','name']));
+	}
+	else {
+		res.send("Not logged in.");
+	}
+});
+
 //json create user
 router.post('/add', function(req,res,next) {
 

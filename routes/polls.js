@@ -9,17 +9,7 @@ router.get('/', function(req, res, next) {
 	models.Poll.findAll({
 		include: [models.User]
 	}).then(function(polls) {
-		res.render('polls/polls', {
-			title: 'Polls',
-			polls: polls
-		});
-	});
-});
-
-//poll creation page
-router.get('/new', ensureLoggedIn, function(req,res,next) {
-	res.render('polls/newPoll', {
-		title: 'New Poll',
+		res.send(polls);
 	});
 });
 
@@ -29,11 +19,7 @@ router.post('/add', ensureLoggedIn, function(req,res,next) {
 	poll = restrict(poll, ['name', 'description', 'Options']);
 
 	if (!poll.Options || poll.Options.length<2) { //this should be validated by sequelize.
-		res.render('polls/newPoll', {
-			title: 'New Poll',
-			poll: poll,
-			displayError: "A new poll must have at least two options."
-		});
+		res.status(400).send("A new poll must have at least two options.")
 		return;
 	}
 
@@ -45,13 +31,9 @@ router.post('/add', ensureLoggedIn, function(req,res,next) {
 		{model: models.Option, required: true},
 		{model: models.Discussion, required: true}
 	]}).then(function(poll) {
-		res.redirect(poll.id);
+		res.send(poll);
 	}).catch(function(err) {
-		res.render('polls/newPoll', {
-			title: 'New Poll',
-			poll: poll,
-			displayError: err.message
-		});
+		res.status(400).send(err.message);
 	});
 });
 
@@ -119,21 +101,15 @@ router.get('/:pollId', function(req,res,next) {
 					}]
 				}).then(function(discussion) {
 
-					res.render('polls/pollResults', {
-						title: poll.name,
-						poll: poll,
-						discussion: discussion.getTreeDiscussion()
-					});
+					poll.Discussion = discussion.getTreeDiscussion();
+					res.send(poll);
 					
 				});
 
 			});
 		}
 		else {
-			res.render('polls/pollVoting', {
-				title: poll.name,
-				poll: poll
-			});
+			res.send(poll);
 		}
 
 	});

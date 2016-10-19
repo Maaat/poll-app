@@ -8,7 +8,7 @@ router.post('/:commentId/reply', ensureLoggedIn, function(req,res,next) {
 
 	models.Comment.findById(req.params.commentId).then(function(parent) {
 		if (!parent) {
-			res.status(400).send({message:"The parent comment does not exist!"});
+			res.status(400).send("The parent comment does not exist!");
 			return;
 		}
 
@@ -23,9 +23,9 @@ router.post('/:commentId/reply', ensureLoggedIn, function(req,res,next) {
 			comment = comment.get({plain:true});
 			comment.User = req.user;
 			comment.Comments = [];
-			res.status(200).send({comment: comment});
+			res.send(comment);
 		}).catch(function(err) {
-			res.status(400).send({message: err.message});
+			res.status(400).send(err.message);
 		});
 	});
 

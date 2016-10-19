@@ -1,8 +1,16 @@
+window.$ = window.jQuery = require('jquery');
+require('bootstrap');
+
 var angular = require('angular');
 require('angular-ui-router');
 require('angular-ui-bootstrap');
 
 var app = angular.module('pollApp', ['ui.router','ui.bootstrap']);
+
+//global controllers and directives
+app.controller('userCtrl', require('./controllers/userCtrl'));
+app.controller('discussionCtrl', require('./controllers/discussionCtrl'));
+app.directive('loginRequired', require('./directives/loginRequired'));
 
 app.config(['$stateProvider','$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -11,8 +19,27 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider, $url
 	$stateProvider
 		.state('home', {
 			url: '/',
-			templateUrl: 'views/home.html',
-			controller: 'homeCtrl'
+			templateUrl: 'views/home.html'
+		})
+		.state('polls', {
+			url: '/polls',
+			controller: require('./controllers/pollListCtrl'),
+			templateUrl: 'views/polls/polls.html'
+		})
+		.state('newPoll', {
+			url: '/polls/new',
+			controller: require('./controllers/newPollCtrl'),
+			templateUrl: 'views/polls/newPoll.html'
+		})
+		.state('poll', {
+			url: '/polls/:id',
+			controller: require('./controllers/pollCtrl'),
+			templateUrl: 'views/polls/poll.html'
+		})
+		.state('user', {
+			url: '/users/:id',
+			controller: require('./controllers/userViewCtrl'),
+			templateUrl: 'views/users/user.html'
 		})
 	;
 }]);

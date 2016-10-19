@@ -1,0 +1,24 @@
+div
+	h1 Polls
+
+	div.row
+		div.col-xs-5
+			a.btn.btn-default(login-required href="polls/new") New Poll
+		div.col-xs-7
+			input.form-control(type="text" ng-model="query.name" placeholder="Search")
+
+	div.row: div.col-xs-12: hr
+
+	table.table.table-bordered(ng-switch="polls.length")
+		tr(ng-switch-when="0"): td No polls found.
+		tr(ng-switch-default)
+			th(width="40%") Name
+			th(width="20%") Created by
+			th(width="20%") Start
+			th(width="20%") End
+		tr(ng-switch-default ng-repeat="poll in polls | filter:query")
+			td: a(ui-sref="poll({ id: poll.id })")
+			td: a(ui-sref="user({ name: poll.User.name })") {{poll.User.name}}
+			td {{poll.createdAt}}
+			td {{poll.closeTime}}
+		//-angular filtering here wouldn't work for a large list.

@@ -1,0 +1,12 @@
+div
+	h1.text-center {{poll.name}}
+	form.form-horizontal.col-xs-8.col-xs-offset-2(name="voteForm",method="post",action="{{'/polls/' + poll.id + '/vote'}}")
+		input(name="optionId",type="hidden")
+		ul.list-group
+			li.list-group-item(ng-repeat="option in poll.Options")
+				div.form-group
+					h2.col-xs-9 {{option.name}}
+					h2.col-xs-3
+						button.btn-primary.form-control(login-required,type="submit",ng-click="vote(option)") Vote
+				div.form-group(ng-if="option.description")
+					p.col-xs-12 {{option.description}}

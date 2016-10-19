@@ -1,21 +1,24 @@
-app.controller('newPollCtrl', [
-	'$scope',
-	function($scope) {
+function newPollCtrl($scope,$http,$state) {
 
-		$scope.poll = (typeof poll == 'undefined')
-		? { Options: [{},{}] }
-		: poll;
+	$scope.addOption = function() {
+		$scope.poll.Options.push({});
+	};
 
-		$scope.addOption = function() {
-			$scope.poll.Options.push({});
-		};
+	$scope.removeOption = function(option) {
+		$scope.poll.Options.splice($scope.poll.Options.indexOf(option),1);
+		if ($scope.poll.Options.length<2) $scope.addOption();
+	}
 
-		$scope.removeOption = function(option) {
-			$scope.poll.Options.splice($scope.poll.Options.indexOf(option),1);
-			if ($scope.poll.Options.length<2) $scope.addOption();
-		}
+	$scope.submit = function() {
+		$http.post('/api/polls/add', $scope.poll)
+			.success(function(data) {
+				$state.go('poll', {id: data.id})
+			})
+			.error(function(data){
+				$scope.$parent.displayError = data;
+			});
+	}
+}
+newPollCtrl.$inject = ['$scope','$http','$state'];
 
-		$scope.submit = function() {
-			$('#newPollForm :input[name=jsonPoll]').val(JSON.stringify($scope.poll));
-		}
-}]);
+module.exports = newPollCtrl;

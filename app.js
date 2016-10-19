@@ -53,10 +53,6 @@ passport.deserializeUser(function(id, cb) {
   });
 });
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -69,17 +65,15 @@ app.use(expressSession({secret:'asdf', resave:false, saveUninitialized:false}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-//supply logged in user object to every jade template
-app.use(function(req,res,next){
-  res.locals.currentUser = restrict(req.user, ['id', 'name']);
-  next();
-});
+app.use('/api/', routes);
+app.use('/api/polls', polls);
+app.use('/api/users', users);
+app.use('/api/discussions', discussions);
+app.use('/api/comments', comments);
 
-app.use('/', routes);
-app.use('/polls', polls);
-app.use('/users', users);
-app.use('/discussions', discussions);
-app.use('/comments', comments);
+app.get('*', (req, res) => {
+  res.sendfile('./client/public/views/index.html');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

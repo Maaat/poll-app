@@ -1,14 +1,6 @@
-extends ../layout
-
-block head
-	if poll
-		script.
-			var poll = !{JSON.stringify(poll)};
-	script(src="/javascripts/controllers/newPollCtrl.js")
-
-block content
+div
 	h1.text-center New Poll
-	form#newPollForm.form-horizontal(name="newPollForm" method="post" action="add" novalidate ng-controller="newPollCtrl" ng-submit="submit()")
+	form#newPollForm.form-horizontal(name="newPollForm" method="post" action="add" novalidate ng-submit="submit()")
 		div.form-group(ng-class="{'has-error' : newPollForm.pollName.$invalid && !newPollForm.pollName.$pristine}")
 			label.col-xs-2.control-label Poll name:
 			div.col-xs-8
