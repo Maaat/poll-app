@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 
 //add poll
 router.post('/add', ensureLoggedIn, function(req,res,next) {
-	var poll = JSON.parse(req.body.jsonPoll);
+	var poll = req.body;
 	poll = restrict(poll, ['name', 'description', 'Options']);
 
 	if (!poll.Options || poll.Options.length<2) { //this should be validated by sequelize.

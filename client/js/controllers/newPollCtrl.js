@@ -1,5 +1,7 @@
 function newPollCtrl($scope,$http,$state) {
 
+	$scope.poll = {Options: [{},{}]};
+
 	$scope.addOption = function() {
 		$scope.poll.Options.push({});
 	};

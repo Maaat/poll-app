@@ -1,6 +1,6 @@
 div
 	h1.text-center New Poll
-	form#newPollForm.form-horizontal(name="newPollForm" method="post" action="add" novalidate ng-submit="submit()")
+	form#newPollForm.form-horizontal(name="newPollForm" novalidate)
 		div.form-group(ng-class="{'has-error' : newPollForm.pollName.$invalid && !newPollForm.pollName.$pristine}")
 			label.col-xs-2.control-label Poll name:
 			div.col-xs-8
@@ -35,4 +35,4 @@ div
 			input(type="hidden" name="jsonPoll")
 			div.col-xs-2
 			div.col-xs-8
-				input.btn.btn-primary.form-control(type="submit" value="Submit" ng-disabled="newPollForm.$invalid")
+				input.btn.btn-primary.form-control(ng-click="submit()" value="Submit" ng-disabled="newPollForm.$invalid")

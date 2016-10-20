@@ -4,6 +4,7 @@ html(ng-app="pollApp",ng-controller="userCtrl")
         title Poll App
         link(rel="stylesheet", href="/style/style.css")
         script(src="/js/bundle.js")
+        base(href="/")
 
         script(id="loginForm.html",type="text/ng-template")
             div.modal-header.text-center
@@ -75,11 +76,11 @@ html(ng-app="pollApp",ng-controller="userCtrl")
                         li: a(ui-sref="user({ name: {{currentUser.name}} })")
                             span.glyphicon.glyphicon-user
                             |  {{currentUser.name}}
-                        li: a(ng-click="logout()", href="javascript:window.location.href=window.location.href")
+                        li: a(role="button" ng-click="logout()")
                             span.glyphicon.glyphicon-log-out
                             |  Log out
                     ul.nav.navbar-nav.navbar-right(ng-if="!currentUser")
-                        li: a(login-required, href="javascript:window.location.href=window.location.href")
+                        li: a(role="button" ng-click="showLogin()")
                             span.glyphicon.glyphicon-log-in
                             |  Log in
         div.container

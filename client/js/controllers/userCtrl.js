@@ -1,15 +1,26 @@
-function userCtrl($scope, $http, $uibModal, $state) {
-	
+function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope, $timeout) {
+
 	//check if we are logged in
 	$http.get('/api/users/currentUser')
 		.success(function(data) {
 			if (data.id) $scope.currentUser = data;
-		})
+		});
+
+	//require login for certain states
+	var loginRequiredStates = ['newPoll'];
+	$rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
+		if (loginRequiredStates.indexOf(toState.name) != -1) {
+			if (!$scope.currentUser) {
+				event.preventDefault();
+				$scope.showLogin({toState: toState, toParams: toParams});
+			}
+		}
+	});
 
 	var dest = undefined;
 	
-	$scope.showLogin = function(href) {
-		dest = href;
+	$scope.showLogin = function(sref) {
+		dest = sref;
 		$uibModal.open({
 			templateUrl: 'loginForm.html',
 			backdrop: true,
@@ -40,8 +51,11 @@ function userCtrl($scope, $http, $uibModal, $state) {
 		});
 		$http.post('/api/login', data)
 			.success(function(data) {
+				$scope.currentUser = data;
+				$uibModalStack.dismissAll()
+
 				if (dest) {
-					$state.go(dest);
+					$state.go(dest.toState, dest.toParams);
 				}
 				else {
 					$state.reload();
@@ -53,15 +67,22 @@ function userCtrl($scope, $http, $uibModal, $state) {
 	};
 
 	$scope.logout = function() {
-		$http.get('/api/logout')
+		$http.post('/api/logout')
 			.success(function(data) {
-				$state.reload();
+				$scope.currentUser = undefined;
+
+				if (loginRequiredStates.indexOf($state.current.name) != -1) {
+					$state.go('home');
+				}
+				else {
+					$state.reload();
+				}
 			})
 			.error(function(data) {
 				$scope.$parent.displayError = data;
 			});
 	};
 }
-userCtrl.$inject = ['$scope','$http','$uibModal', '$state'];
+userCtrl.$inject = ['$scope','$http','$uibModal', '$uibModalStack', '$state', '$rootScope', '$timeout'];
 
 module.exports = userCtrl;

@@ -16,7 +16,7 @@ router.post('/:commentId/reply', ensureLoggedIn, function(req,res,next) {
 			UserId: req.user.id,
 			DiscussionId: parent.DiscussionId,
 			CommentId: parent.id,
-			text: req.body.replyText
+			text: req.body.text
 		};
 
 		models.Comment.create(comment).then(function(comment) {

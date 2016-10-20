@@ -9,7 +9,7 @@ router.post('/:discussionId/comment', ensureLoggedIn, function(req,res,next) {
 	var comment = {
 		UserId: req.user.id,
 		DiscussionId: req.params.discussionId,
-		text: req.body.commentText
+		text: req.body.text
 	};
 
 	models.Comment.create(comment).then(function(comment) {

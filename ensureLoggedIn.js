@@ -1,9 +1,8 @@
 function ensureLoggedIn(req, res, next) {
 	if (req.user) return next();
-
-	var dest = (req.method=="GET") ? req.originalUrl : req.get('Referrer')
-	
-	res.redirect('/login?dest='+dest);
+	else {
+		res.status(400).send("You must be logged in.");
+	}
 }
 
 module.exports = ensureLoggedIn;

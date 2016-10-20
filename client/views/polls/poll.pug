@@ -2,20 +2,20 @@ div
 	div.row
 		h1.text-center {{poll.name}}
 		div.form-horizontal.col-xs-8.col-xs-offset-2(name="voteForm")
-			ul.list-group(ng-if="!poll.Options[0].voteCount")
+			ul.list-group(ng-if="!poll.Options[0].hasOwnProperty('voteCount')")
 				li.list-group-item(ng-repeat="option in poll.Options")
 					div.form-group
 						h2.col-xs-9 {{option.name}}
 						h2.col-xs-3
-							button.btn-primary.form-control(login-required,type="submit",ng-click="vote(option)") Vote
+							button.btn-primary.form-control(ng-click="vote(option)") Vote
 					div.form-group(ng-if="option.description")
 						p.col-xs-12 {{option.description}}
-			ul.list-group(ng-if="poll.Options[0].voteCount")
+			ul.list-group(ng-if="poll.Options[0].hasOwnProperty('voteCount')")
 				li.list-group-item(ng-repeat="option in poll.Options")
 					div.container-fluid
 						div.row
 							h2.pull-left {{option.name}}
 							h2.pull-right Votes: {{option.voteCount}}
 						div.row(ng-if="option.description"): p {{option.description}}
-	div(ng-if="poll.Options[0].voteCount")
+	div(ng-if="poll.Options[0].hasOwnProperty('voteCount')")
 		include ../discussions/discussion

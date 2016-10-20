@@ -8,12 +8,12 @@ router.post('/login', function(req,res,next) {
 		if (!user) { return res.status(401).send("Invalid username or password."); }
 		req.logIn(user, function(err) {
 			if (err) { return next(err); }
-			return res.send("Logged in!");
+			return res.send(user);
 		});
 	})(req, res, next);
 });
 
-router.get('/logout', function(req,res) {
+router.post('/logout', function(req,res) {
 	req.logout();
 	res.send("Logged out.");
 });

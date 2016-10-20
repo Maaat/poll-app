@@ -10,9 +10,9 @@ var app = angular.module('pollApp', ['ui.router','ui.bootstrap']);
 //global controllers and directives
 app.controller('userCtrl', require('./controllers/userCtrl'));
 app.controller('discussionCtrl', require('./controllers/discussionCtrl'));
-app.directive('loginRequired', require('./directives/loginRequired'));
 
-app.config(['$stateProvider','$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+app.config(['$stateProvider','$urlRouterProvider', '$locationProvider',
+		function($stateProvider, $urlRouterProvider, $locationProvider) {
 
 	$urlRouterProvider.otherwise('/');
 
@@ -37,9 +37,12 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider, $url
 			templateUrl: 'views/polls/poll.html'
 		})
 		.state('user', {
-			url: '/users/:id',
+			url: '/users/:name',
 			controller: require('./controllers/userViewCtrl'),
 			templateUrl: 'views/users/user.html'
 		})
 	;
+
+	$locationProvider.html5Mode(true);
+	
 }]);

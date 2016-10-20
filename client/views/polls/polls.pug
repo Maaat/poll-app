@@ -17,7 +17,7 @@ div
 			th(width="20%") Start
 			th(width="20%") End
 		tr(ng-switch-default ng-repeat="poll in polls | filter:query")
-			td: a(ui-sref="poll({ id: poll.id })")
+			td: a(login-required ui-sref="poll({ id: poll.id })") {{poll.name}}
 			td: a(ui-sref="user({ name: poll.User.name })") {{poll.User.name}}
 			td {{poll.createdAt}}
 			td {{poll.closeTime}}
