@@ -72,7 +72,7 @@ app.use('/api/discussions', discussions);
 app.use('/api/comments', comments);
 
 app.get('*', (req, res) => {
-  res.sendfile('./client/public-build/views/index.html');
+  res.sendFile(path.join(__dirname, '../client/public-build/views/index.html'));
 });
 
 // catch 404 and forward to error handler
