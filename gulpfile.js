@@ -26,7 +26,15 @@ gulp.task('js', () => {
 	.pipe(gulp.dest('client/public-build/js/'));
 });
 
-gulp.task('style', function() {
+gulp.task('fast-js', () => {
+	return browserify('client/js/app.js',{debug:true})
+	.bundle()
+	.pipe(source('bundle.js'))
+	.pipe(buffer())
+	.pipe(gulp.dest('client/public-build/js/'));
+});
+
+gulp.task('style', () => {
 	return gulp.src('client/style/*.css')
 	.pipe(sourcemaps.init())
 	.pipe(cleanCSS())
@@ -42,8 +50,12 @@ gulp.task('fonts', () => {
 
 gulp.task('watch', () => {
 	gulp.watch('client/views/**/*.pug', ['views']);
-	gulp.watch('client/js/**/*.js', ['js']);
+	gulp.watch('client/js/**/*.js', ['fast-js']);
 	gulp.watch('client/style/**/*.css', ['style']);
 });
 
-gulp.task('default', ['views','js','style','fonts','watch']);
+gulp.task('build-client', ['views','js','style','fonts']);
+
+gulp.task('dev', ['views','fast-js','style','fonts','watch']);
+
+gulp.task('default', ['build-client']);
