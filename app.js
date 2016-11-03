@@ -39,7 +39,7 @@ passport.use(new Strategy(
     }).then(function(user) {
       if (!user) { return cb(null, false); }
       if (!bcrypt.compareSync(password, user.LoginInfo.passwordHash)) { return cb(null, false); }
-      return cb(null, user);
+      return cb(null, restrict(user, ['id','name']));
     });
   }));
 
