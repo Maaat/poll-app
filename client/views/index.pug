@@ -18,20 +18,20 @@ html(ng-app="pollApp",ng-controller="userCtrl")
                         div.form-group(ng-class="{'has-error' : (registerForm.newUsername.$invalid && !registerForm.newUsername.$pristine) || accountCreationError}")
                             label.col-xs-3.control-label Username:
                             div.col-xs-8
-                                input.form-control(type="text",name="newUsername",ng-model="$parent.$parent.newUsername",required,ng-maxlength="20")
+                                input.form-control(type="text",name="newUsername",ng-model="$parent.$parent.newUser.username",required,ng-maxlength="20")
                                 p.help-block(ng-if="registerForm.newUsername.$error.required && !registerForm.newUsername.$pristine") Username is required.
                                 p.help-block(ng-if="registerForm.newUsername.$error.maxlength") 20 character limit
                                 p.help-block(ng-if="accountCreationError") {{accountCreationError}}
                         div.form-group(ng-class="{'has-error' : registerForm.newPassword.$invalid && !registerForm.newPassword.$pristine}")
                             label.col-xs-3.control-label Password:
                             div.col-xs-8
-                                input.form-control(type="password",name="newPassword",ng-model="$parent.$parent.newPassword",required,ng-maxlength="128")
+                                input.form-control(type="password",name="newPassword",ng-model="$parent.$parent.newUser.password",required,ng-maxlength="128")
                                 p.help-block(ng-if="registerForm.newPassword.$error.required && !registerForm.newPassword.$pristine") Password is required.
                                 p.help-block(ng-if="registerForm.newPassword.$error.maxlength") 128 character limit
                         div.form-group(ng-class="{'has-error' : (registerForm.confirmNewPassword.$invalid || newPassword!=confirmNewPassword) && !registerForm.confirmNewPassword.$pristine}")
                             label.col-xs-3.control-label Confirm Password:
                             div.col-xs-8
-                                input.form-control(type="password",name="confirmNewPassword",ng-model="$parent.$parent.confirmNewPassword",required,ng-maxlength="128")
+                                input.form-control(type="password",name="confirmNewPassword",ng-model="$parent.$parent.newUser.confirmPassword",required,ng-maxlength="128")
                                 p.help-block(ng-if="registerForm.confirmNewPassword.$error.required && !registerForm.confirmNewPassword.$pristine") Password confirmation is required.
                                 p.help-block(ng-if="registerForm.confirmNewPassword.$error.maxlength") 128 character limit
                                 p.help-block(ng-if="confirmNewPassword && !registerForm.confirmNewPassword.$pristine && newPassword!=confirmNewPassword") Passwords do not match.
@@ -46,12 +46,12 @@ html(ng-app="pollApp",ng-controller="userCtrl")
                         div.form-group(ng-class="{'has-error' : loginForm.username.$invalid && !loginForm.username.$pristine}")
                             label.col-xs-3.control-label Username:
                             div.col-xs-8
-                                input.form-control(type="text",name="username",ng-model="$parent.username",required)
+                                input.form-control(type="text",name="username",ng-model="$parent.existingUser.username",required)
                                 p.help-block(ng-if="loginForm.username.$error.required && !loginForm.username.$pristine") Username is required.
                         div.form-group(ng-class="{'has-error' : (loginForm.password.$invalid && !loginForm.password.$pristine) || loginError}")
                             label.col-xs-3.control-label Password:
                             div.col-xs-8
-                                input.form-control(type="password",name="password",ng-model="$parent.password",required)
+                                input.form-control(type="password",name="password",ng-model="$parent.existingUser.password",required)
                                 p.help-block(ng-if="loginForm.password.$error.required && !loginForm.password.$pristine") Password is required.
                                 p.help-block(ng-if="loginError") {{loginError}}
                         div.form-group
@@ -73,7 +73,7 @@ html(ng-app="pollApp",ng-controller="userCtrl")
                     ul.nav.navbar-nav
                         li: a(ui-sref="polls") Polls
                     ul.nav.navbar-nav.navbar-right(ng-if="currentUser")
-                        li: a(ui-sref="user({ name: {{currentUser.name}} })")
+                        li: a(ui-sref="user({ name: currentUser.name })")
                             span.glyphicon.glyphicon-user
                             |  {{currentUser.name}}
                         li: a(role="button" ng-click="logout()")
@@ -84,6 +84,6 @@ html(ng-app="pollApp",ng-controller="userCtrl")
                             span.glyphicon.glyphicon-log-in
                             |  Log in
         div.container
-            div(ng-if="displayError").alert.alert-danger
-                p {{displayError}}
+            div(ng-cloak ng-if="error").alert.alert-danger
+                p {{error}}
             div(ui-view)

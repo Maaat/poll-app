@@ -1,7 +1,7 @@
 function ensureLoggedIn(req, res, next) {
 	if (req.user) return next();
 	else {
-		res.status(400).send("You must be logged in.");
+		res.status(401).send("You must be logged in.");
 	}
 }
 

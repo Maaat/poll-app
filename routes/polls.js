@@ -54,7 +54,10 @@ router.get('/:pollId', function(req,res,next) {
 		include: [optionsInclude]
 	}).then(function(poll){
 
-		if (!poll) return next();
+		if (!poll) {
+			res.status(404).send("Poll not found.");
+			return;
+		}
 
 		//if the user has voted then get the vote counts and render the results page.
 		if (req.user
@@ -150,7 +153,7 @@ router.post('/:pollId/vote', ensureLoggedIn, function(req,res,next) {
 				UserId: userId,
 				OptionId: optionId
 			}).then(function(OptionVote) {
-				res.redirect('/polls/'+pollId);
+				res.redirect('/api/polls/'+pollId);
 			});
 		}
 	});

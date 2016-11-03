@@ -17,6 +17,11 @@ function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope, 
 		}
 	});
 
+	//remove error message on successful state change
+	$rootScope.$on('$stateChangeSuccess', function() {
+		$scope.error = undefined;
+	});
+
 	var dest = undefined;
 	
 	$scope.showLogin = function(sref) {
@@ -31,13 +36,11 @@ function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope, 
 	};
 
 	$scope.createAccount=function() {
-		var data = JSON.stringify({
-			username: $scope.newUsername,
-			password: $scope.newPassword
-		});
+		var data = JSON.stringify($scope.newUser);
 		$http.post('/api/users/add', data)
 			.success(function(data) {
 				$scope.accountCreated = data;
+				$scope.newUser = {};
 			})
 			.error(function(data) {
 				$scope.accountCreationError = data;
@@ -45,10 +48,7 @@ function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope, 
 	};
 
 	$scope.login=function() {
-		var data = JSON.stringify({
-			username: $scope.username,
-			password: $scope.password
-		});
+		var data = JSON.stringify($scope.existingUser);
 		$http.post('/api/login', data)
 			.success(function(data) {
 				$scope.currentUser = data;
@@ -60,6 +60,9 @@ function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope, 
 				else {
 					$state.reload();
 				}
+
+				$scope.existingUser = {};
+
 			})
 			.error(function(data) {
 				$scope.loginError = data;
@@ -79,7 +82,7 @@ function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope, 
 				}
 			})
 			.error(function(data) {
-				$scope.$parent.displayError = data;
+				$scope.error = data;
 			});
 	};
 }

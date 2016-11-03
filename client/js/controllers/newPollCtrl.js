@@ -17,7 +17,7 @@ function newPollCtrl($scope,$http,$state) {
 				$state.go('poll', {id: data.id})
 			})
 			.error(function(data){
-				$scope.$parent.displayError = data;
+				$scope.$parent.error = data;
 			});
 	}
 }

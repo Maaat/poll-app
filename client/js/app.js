@@ -11,8 +11,8 @@ var app = angular.module('pollApp', ['ui.router','ui.bootstrap']);
 app.controller('userCtrl', require('./controllers/userCtrl'));
 app.controller('discussionCtrl', require('./controllers/discussionCtrl'));
 
-app.config(['$stateProvider','$urlRouterProvider', '$locationProvider',
-		function($stateProvider, $urlRouterProvider, $locationProvider) {
+app.config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider',
+		function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
 	$urlRouterProvider.otherwise('/');
 
@@ -44,5 +44,22 @@ app.config(['$stateProvider','$urlRouterProvider', '$locationProvider',
 	;
 
 	$locationProvider.html5Mode(true);
+
+	//display a login prompt when the user gets a 401 error.
+	$httpProvider.interceptors.push(['$q', function($q) {
+		return {
+			'responseError': function(rejection) {
+				if (rejection.status == 401) {
+					var mainScope = angular.element(document.body).scope();
+
+					mainScope.currentUser = undefined;
+					mainScope.showLogin();
+
+				}
+
+				return $q.reject(rejection);
+			}
+		};
+	}]);
 	
 }]);

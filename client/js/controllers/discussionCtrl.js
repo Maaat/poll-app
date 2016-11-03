@@ -1,14 +1,11 @@
 function discussionCtrl($scope, $http) {
 
-		if ($scope.$parent.poll) $scope.discussion = $scope.$parent.poll.Discussion;
-		else if ($scope.$parent.user) $scope.discussion = $scope.$parent.user.Discussion;
-
 		$scope.submitComment = function() {
-			$http.post('/api/discussions/'+$scope.discussion.id+'/comment', {text: $scope.commentText})
+			$http.post('/api/discussions/'+$scope.$parent.discussion.id+'/comment', {text: $scope.commentText})
 				.success(function(data) {
-					$scope.discussion.Comments.push(data);
+					$scope.$parent.discussion.Comments.push(data);
 					$scope.commentText="";
-					$scope.discussion.commentBox=false;
+					$scope.$parent.discussion.commentBox=false;
 				})
 				.error(function(data) {
 					$scope.error=data;

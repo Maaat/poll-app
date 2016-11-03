@@ -59,7 +59,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'client/public')));
+app.use(express.static(path.join(__dirname, 'client/public-build')));
 app.use(expressSession({secret:'asdf', resave:false, saveUninitialized:false}));
 
 app.use(passport.initialize());
@@ -72,7 +72,7 @@ app.use('/api/discussions', discussions);
 app.use('/api/comments', comments);
 
 app.get('*', (req, res) => {
-  res.sendfile('./client/public/views/index.html');
+  res.sendfile('./client/public-build/views/index.html');
 });
 
 // catch 404 and forward to error handler

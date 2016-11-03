@@ -33,13 +33,13 @@ router.post('/add', function(req,res,next) {
 	};
 	
 	models.User.create(user, {include: [models.LoginInfo, models.Discussion]}).then(function(user) {
-		res.send({status:200, message:"Account "+user.name+" created!"});
+		res.send("Account "+user.name+" created!");
 	}).catch(function (err) {
 		if (err.name == "SequelizeUniqueConstraintError") {
-			res.status(400).send({status:400, message:"The username "+req.body.username+" is already taken."});
+			res.status(400).send("The username "+req.body.username+" is already taken.");
 		}
 		else {
-			res.status(400).send({status:400, message:"Error"});
+			res.status(400).send("Error");
 		}
 	});
 
@@ -66,13 +66,17 @@ router.get('/:username', function(req,res,next) {
 			req.params.username.toLowerCase()
 		)
 	}).then(function(user) {
-		if (!user) return next();
+		if (!user) {
+			res.status(404).send("User not found.");
+			return;
+		}
 
-		res.render('users/user', {
-			title: user.name,
-			user: restrict(user, ['id','name','Polls','Discussion']),
-			discussion: user.Discussion.getTreeDiscussion()
-		});
+		var discussion = user.Discussion.getTreeDiscussion();
+		user = user.get({plain: true});
+		user.Discussion = discussion;
+
+		res.send(user);
+
 	});
 });
 
