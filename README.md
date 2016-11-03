@@ -14,6 +14,6 @@ gulp build-client
 
 #Start the server
 npm start
-
-#Go to localhost:3000 in a browser
 ```
+
+Then go to localhost:3000 in a browser to use Poll App.
