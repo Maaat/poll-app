@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var sequelize = require('sequelize');
 
 /* GET users listing. */

@@ -58,4 +58,4 @@ gulp.task('build-client', ['views','js','style','fonts']);
 
 gulp.task('dev', ['views','fast-js','style','fonts','watch']);
 
-gulp.task('default', ['build-client']);
+gulp.task('default', ['dev']);
