@@ -12,13 +12,11 @@ div
 	table.table.table-bordered(ng-switch="polls.length")
 		tr(ng-switch-when="0"): td No polls found.
 		tr(ng-switch-default)
-			th(width="40%") Name
+			th(width="60%") Name
 			th(width="20%") Created by
-			th(width="20%") Start
-			th(width="20%") End
+			th(width="20%") Started
 		tr(ng-switch-default ng-repeat="poll in polls | filter:query")
-			td: a(login-required ui-sref="poll({ id: poll.id })") {{poll.name}}
+			td: a(ui-sref="poll({ id: poll.id })") {{poll.name}}
 			td: a(ui-sref="user({ name: poll.User.name })") {{poll.User.name}}
 			td {{poll.createdAt}}
-			td {{poll.closeTime}}
 		//-angular filtering here wouldn't work for a large list.
