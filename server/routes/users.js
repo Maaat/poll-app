@@ -48,8 +48,12 @@ router.post('/add', function(req,res,next) {
 //user page
 router.get('/:username', function(req,res,next) {
 	models.User.findOne({
+		attributes: ['id','name','DiscussionId'],
 		include: [
-			models.Poll,
+			{
+				model: models.Poll,
+				attributes: ['id','name','createdAt']
+			},
 			{
 				model: models.Discussion,
 				include: {

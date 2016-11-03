@@ -7,10 +7,12 @@ var ensureLoggedIn = require('../ensureLoggedIn');
 /* GET polls listing. */
 router.get('/', function(req, res, next) {
 	models.Poll.findAll({
-		include: [models.User]
+		attributes: ['id','name','createdAt'],
+		include: [{
+			model: models.User,
+			attributes: ['id','name']
+		}]
 	}).then(function(polls) {
-		polls = restrict(polls, ['id','name','createdAt','User']);
-		polls.forEach(poll => { poll.User = restrict(poll.User, ['id','name']); });
 		res.send(polls);
 	});
 });
