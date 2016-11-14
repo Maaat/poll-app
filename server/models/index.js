@@ -12,7 +12,7 @@ if (env=='development') {
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 else {
-  var sequelize = new Sequelize("postgres://dnubcsarqkeiuc:5u-g9cCehRg-b77XUXSt2IPTy5@ec2-50-17-220-39.compute-1.amazonaws.com:5432/d5ib88uq0u61pv", {
+  var sequelize = new Sequelize(process.env.DATABASE_URL, {
     logging: false,
     dialectOptions: {
       ssl: true /* for SSL config since Heroku gives you this out of the box */
