@@ -9,9 +9,6 @@ cd poll-app
 #Install dependencies. On Windows, you'll need to run this one as an administrator without sudo.
 sudo npm install
 
-#Build the client-side app
-gulp build-client
-
 #Start the server
 npm start
 ```
