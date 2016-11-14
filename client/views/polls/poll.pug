@@ -1,6 +1,8 @@
 div(ng-if="poll")
 	div.row
 		h1.text-center {{poll.name}}
+		div.text-center.col-xs-8.col-xs-offset-2
+			p {{poll.description}}
 		div.form-horizontal.col-xs-8.col-xs-offset-2(name="voteForm")
 			ul.list-group(ng-if="!poll.Options[0].hasOwnProperty('voteCount')")
 				li.list-group-item(ng-repeat="option in poll.Options")
