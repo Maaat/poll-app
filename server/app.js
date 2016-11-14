@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var sequelize = require('sequelize');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var bcrypt = require('bcryptjs');
@@ -30,9 +31,10 @@ var globalFunctions = require('./globalFunctions.js');
 passport.use(new Strategy(
   function(username, password, cb) {
     models.User.findOne({
-      where: {
-        name: username
-      },
+      where: sequelize.where(
+        sequelize.fn('lower', sequelize.col('name')),
+        username.toLowerCase()
+      ),
       include: [
         {model: models.LoginInfo, required: true}
       ]
