@@ -3,6 +3,7 @@ html(ng-app="pollApp",ng-controller="userCtrl")
     head
         title Poll App
         link(rel="stylesheet", href="/style/style.css")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
         script(src="/js/bundle.js")
         base(href="/")
 
@@ -69,16 +70,16 @@ html(ng-app="pollApp",ng-controller="userCtrl")
                     a.navbar-brand(ui-sref="home") Poll App
                 div#navbar.collapse.navbar-collapse
                     ul.nav.navbar-nav
-                        li: a(ui-sref="polls") Polls
+                        li: a(ui-sref="polls" data-toggle="collapse" data-target="#navbar") Polls
                     ul.nav.navbar-nav.navbar-right(ng-if="currentUser" ng-cloak)
-                        li: a(ui-sref="user({ name: currentUser.name })")
+                        li: a(ui-sref="user({ name: currentUser.name })" data-toggle="collapse" data-target="#navbar")
                             span.glyphicon.glyphicon-user
                             |  {{currentUser.name}}
-                        li: a(role="button" ng-click="logout()")
+                        li: a(role="button" ng-click="logout()" data-toggle="collapse" data-target="#navbar")
                             span.glyphicon.glyphicon-log-out
                             |  Log out
                     ul.nav.navbar-nav.navbar-right(ng-if="!currentUser" ng-cloak)
-                        li: a(role="button" ng-click="showLogin()")
+                        li: a(role="button" ng-click="showLogin()" data-toggle="collapse" data-target="#navbar")
                             span.glyphicon.glyphicon-log-in
                             |  Log in
         div.container
