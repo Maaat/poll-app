@@ -5,7 +5,7 @@ div(ng-if="poll")
 			.text-center
 				p {{poll.description}}
 				p
-					| Created by 
+					| Poll created by 
 					a(ui-sref="user({ name: poll.User.name })") {{poll.User.name}}
 		.panel-body
 			.row

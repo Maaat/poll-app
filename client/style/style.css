@@ -19,6 +19,10 @@ body {
 	background-color: #337ab7;
 }
 
+.list-group-item h2 {
+	margin-top: 10px;
+}
+
 a {
 	color: #00B7FF;
 }
