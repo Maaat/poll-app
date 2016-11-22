@@ -14,18 +14,18 @@ div(ng-if="poll")
 						ul.list-group(ng-if="!poll.Options[0].hasOwnProperty('voteCount')")
 							li.list-group-item(ng-repeat="option in poll.Options")
 								.row
-									.col-xs-7.col-xs-offset-1
+									.col-sm-7.col-sm-offset-1.col-xs-8
 										h2 {{option.name}}
 										p {{option.description}}
-									.col-xs-3
+									.col-sm-3.col-xs-4
 										h2: button.btn-primary.form-control(ng-click="vote(option)") Vote
 						ul.list-group(ng-if="poll.Options[0].hasOwnProperty('voteCount')")
 							li.list-group-item(ng-repeat="option in poll.Options")
 								.row
-									.col-xs-7.col-xs-offset-1
+									.col-sm-7.col-sm-offset-1.col-xs-8
 										h2 {{option.name}}
 										p {{option.description}}
-									.col-xs-3
+									.col-sm-3.col-xs-4
 										h2.pull-right Votes: {{option.voteCount}}
 			div(ng-if="poll.Options[0].hasOwnProperty('voteCount')")
 				include ../discussions/discussion
