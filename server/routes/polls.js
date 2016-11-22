@@ -55,7 +55,7 @@ router.get('/:pollId', function(req,res,next) {
 
 	//query for the poll and options.
 	models.Poll.findById(req.params.pollId, {
-		include: [optionsInclude]
+		include: [optionsInclude, {model:models.User}]
 	}).then(function(poll){
 
 		if (!poll) {

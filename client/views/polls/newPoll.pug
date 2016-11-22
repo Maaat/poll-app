@@ -1,38 +1,42 @@
-div
-	h1.text-center New Poll
-	form#newPollForm.form-horizontal(name="newPollForm" novalidate)
-		div.form-group(ng-class="{'has-error' : newPollForm.pollName.$invalid && !newPollForm.pollName.$pristine}")
-			label.col-xs-2.control-label Poll name:
-			div.col-xs-8
-				input.form-control(name="pollName" ng-model="poll.name" placeholder="Poll name" required ng-maxlength="60")
-				p.help-block(ng-if="newPollForm.pollName.$error.required && !newPollForm.pollName.$pristine") Poll name is required.
-				p.help-block(ng-if="newPollForm.pollName.$error.maxlength") 60 character limit
-		div.form-group(ng-class="{'has-error' : newPollForm.pollDescription.$invalid && !newPollForm.pollDescription.$pristine}")
-			label.col-xs-2.control-label Poll description:
-			div.col-xs-8
-				textarea.form-control(name="pollDescription" ng-model="poll.description" placeholder="Poll description" rows="4" ng-maxlength="140")
-		div.form-group
-			h3.col-xs-2.control-label Options:
-			div.col-xs-8
-				ul.list-group
-					li.list-group-item(ng-repeat="option in poll.Options")
-						div.form-group(ng-class="{'has-error' : newPollForm['optionName_'+$index].$invalid && (!newPollForm['optionName_'+$index].$pristine || !newPollForm['optionDescription_'+$index].$pristine)}")
-							label.col-xs-2.control-label Name:
-							div.col-xs-8
-								input.form-control(name="optionName_{{$index}}" ng-model="option.name" required ng-maxlength="60")
-								p.help-block(ng-if="newPollForm['optionName_'+$index].$error.required && (!newPollForm['optionName_'+$index].$pristine || !newPollForm['optionDescription_'+$index].$pristine)") Option name is required.
-								p.help-block(ng-if="newPollForm['optionName_'+$index].$error.maxlength") 140 character limit
-							div.col-xs-2
-								button.form-control(type="button" ng-click="removeOption(option)" tabindex="-1") Remove
-						div.form-group(ng-class="{'has-error' : newPollForm['optionDescription_'+$index].$invalid && !newPollForm['optionDescription_'+$index].$pristine}")
-							label.col-xs-2.control-label Description:
-							div.col-xs-8
-								textarea.form-control(name="optionDescription_{{$index}}" ng-model="option.description" rows="4" ng-maxlength="140")
-								p.help-block(ng-if="newPollForm['optionDescription_'+$index].$error.maxlength") 140 character limit
-					li.list-group-item
-						button.form-control(type="button" ng-click="addOption()") Add option
-		div.form-group
-			input(type="hidden" name="jsonPoll")
-			div.col-xs-2
-			div.col-xs-8
-				input.btn.btn-primary.form-control(ng-click="submit()" value="Submit" ng-disabled="newPollForm.$invalid")
+div(ng-if="currentUser")
+	.panel.panel-default
+		.panel-heading
+			h1.text-center New Poll
+		form#newPollForm.form-horizontal.panel-body(name="newPollForm" novalidate)
+			div.form-group(ng-class="{'has-error' : newPollForm.pollName.$invalid && !newPollForm.pollName.$pristine}")
+				label.col-md-2.control-label Question:
+				div.col-md-8
+					input.form-control(name="pollName" ng-model="poll.name" required ng-maxlength="60")
+					p.help-block(ng-if="newPollForm.pollName.$error.required && !newPollForm.pollName.$pristine") Question is required.
+					p.help-block(ng-if="newPollForm.pollName.$error.maxlength") 60 character limit
+			div.form-group(ng-class="{'has-error' : newPollForm.pollDescription.$invalid && !newPollForm.pollDescription.$pristine}")
+				label.col-md-2.control-label Additional details:
+				div.col-md-8
+					textarea.form-control(name="pollDescription" ng-model="poll.description" rows="4" ng-maxlength="140")
+			div.form-group
+				label.col-md-2.control-label: h3 Options:
+				div.col-md-8
+					ul.list-group
+						li.list-group-item(ng-repeat="option in poll.Options")
+							.row
+								.col-sm-10
+									div.form-group(ng-class="{'has-error' : newPollForm['optionName_'+$index].$invalid && (!newPollForm['optionName_'+$index].$pristine || !newPollForm['optionDescription_'+$index].$pristine)}")
+										label.col-md-2.control-label Name:
+										div.col-md-10
+											input.form-control(name="optionName_{{$index}}" ng-model="option.name" required ng-maxlength="60")
+											p.help-block(ng-if="newPollForm['optionName_'+$index].$error.required && (!newPollForm['optionName_'+$index].$pristine || !newPollForm['optionDescription_'+$index].$pristine)") Option name is required.
+											p.help-block(ng-if="newPollForm['optionName_'+$index].$error.maxlength") 140 character limit
+									div.form-group(ng-class="{'has-error' : newPollForm['optionDescription_'+$index].$invalid && !newPollForm['optionDescription_'+$index].$pristine}")
+										label.col-md-2.control-label Additional details:
+										div.col-md-10
+											textarea.form-control(name="optionDescription_{{$index}}" ng-model="option.description" rows="4" ng-maxlength="140")
+											p.help-block(ng-if="newPollForm['optionDescription_'+$index].$error.maxlength") 140 character limit
+								.col-sm-2
+									button.form-control(type="button" ng-click="removeOption(option)" tabindex="-1") Remove
+						li.list-group-item
+							button.form-control(type="button" ng-click="addOption()") Add option
+			div.form-group
+				input(type="hidden" name="jsonPoll")
+				div.col-xs-2
+				div.col-xs-8
+					input.btn.btn-primary.form-control(ng-click="submit()" value="Submit" ng-disabled="newPollForm.$invalid")

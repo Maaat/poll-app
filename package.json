@@ -27,6 +27,7 @@
     "gulp-util": "^3.0.7",
     "jquery": "^3.1.1",
     "morgan": "~1.6.1",
+    "ng-scroll-glue": "^2.0.10",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pg": "^6.1.0",

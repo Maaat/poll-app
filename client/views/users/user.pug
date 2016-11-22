@@ -1,14 +1,18 @@
 div(ng-if="user")
-	h1.text-center {{user.name}}
+	.panel.panel-default
+		.panel-heading
+			h1.text-center {{user.name}}
+		.panel-body
+			.panel.panel-default
+				.panel-heading
+					h2 Polls
+				table.panel-body.table.table-bordered(ng-switch="user.Polls.length")
+					tr(ng-switch-when="0"): td No polls found.
+						tr(ng-switch-default)
+							th(width="80%") Question
+							th(width="20%") Started
+						tr(ng-switch-default ng-repeat="poll in user.Polls")
+							td: a(href="/polls/{{poll.id}}") {{poll.name}}
+							td {{poll.createdAt}}
 
-	h2 Polls
-	table.table.table-bordered(ng-switch="user.Polls.length")
-		tr(ng-switch-when="0"): td No polls found.
-			tr(ng-switch-default)
-				th(width="80%") Name
-				th(width="20%") Started
-			tr(ng-switch-default ng-repeat="poll in user.Polls")
-				td: a(href="/polls/{{poll.id}}") {{poll.name}}
-				td {{poll.createdAt}}
-
-	include ../discussions/discussion
+			include ../discussions/discussion
