@@ -1,19 +1,32 @@
-function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope, $timeout) {
+function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope) {
 
 	//check if we are logged in
-	$http.get('/api/users/currentUser')
+	var loggedinCheck = $http.get('/api/users/currentUser')
 		.success(function(data) {
 			if (data.id) $scope.currentUser = data;
 		});
 
 	//require login for certain states
 	var loginRequiredStates = ['newPoll'];
-	$rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
-		if (loginRequiredStates.indexOf(toState.name) != -1) {
-			if (!$scope.currentUser) {
-				event.preventDefault();
-				$scope.showLogin({toState: toState, toParams: toParams});
-			}
+
+	//on state change start
+	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
+
+		//check if this is a restricted state and if the user is logged in.
+		if (loginRequiredStates.indexOf(toState.name) != -1 && !options.loginConfirmed) {
+			
+			//stop the state change until the login is confirmed
+			event.preventDefault();
+
+			//check for the current user after the current user check promise has finished.
+			loggedinCheck.then(function() {
+				if ($scope.currentUser) {
+					$state.go(toState, toParams, {loginConfirmed:true});
+				}
+				else {
+					$scope.showLogin({toState:toState, toParams:toParams});
+				}
+			});
 		}
 	});
 
@@ -86,6 +99,6 @@ function userCtrl($scope, $http, $uibModal, $uibModalStack, $state, $rootScope, 
 			});
 	};
 }
-userCtrl.$inject = ['$scope','$http','$uibModal', '$uibModalStack', '$state', '$rootScope', '$timeout'];
+userCtrl.$inject = ['$scope','$http','$uibModal', '$uibModalStack', '$state', '$rootScope'];
 
 module.exports = userCtrl;
