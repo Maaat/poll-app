@@ -63,23 +63,23 @@ html(ng-app="pollApp",ng-controller="userCtrl")
         nav.navbar.navbar-inverse
             div.container-fluid
                 div.navbar-header
-                    button.navbar-toggle(type="button" data-toggle="collapse" data-target="#navbar")
+                    button.navbar-toggle(type="button" data-toggle="collapse" data-target="#navbarCollapse")
                         span.icon-bar
                         span.icon-bar
                         span.icon-bar
                     a.navbar-brand(ui-sref="home") Poll App
-                div#navbar.collapse.navbar-collapse
+                div#navbarCollapse.collapse.navbar-collapse
                     ul.nav.navbar-nav
-                        li: a(ui-sref="polls" data-toggle="collapse" data-target="#navbar") Polls
-                    ul.nav.navbar-nav.navbar-right(ng-if="currentUser" ng-cloak)
-                        li: a(ui-sref="user({ name: currentUser.name })" data-toggle="collapse" data-target="#navbar")
+                        li: a(ui-sref="polls") Polls
+                    ul.nav.navbar-nav.navbar-right(ng-show="currentUser")
+                        li: a(ui-sref="user({ name: currentUser.name })")
                             span.glyphicon.glyphicon-user
                             |  {{currentUser.name}}
-                        li: a(role="button" ng-click="logout()" data-toggle="collapse" data-target="#navbar")
+                        li: a(role="button" ng-click="logout()")
                             span.glyphicon.glyphicon-log-out
                             |  Log out
-                    ul.nav.navbar-nav.navbar-right(ng-if="!currentUser" ng-cloak)
-                        li: a(role="button" ng-click="showLogin()" data-toggle="collapse" data-target="#navbar")
+                    ul.nav.navbar-nav.navbar-right(ng-show="!currentUser")
+                        li: a(role="button" ng-click="showLogin()")
                             span.glyphicon.glyphicon-log-in
                             |  Log in
         div.container

@@ -63,3 +63,13 @@ app.config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpPr
 	}]);
 	
 }]);
+
+var $ = window.$;
+
+$(document).ready(function(){
+	$('.navbar a').click(function(){
+		if ($(document).width()<768) {
+			$('#navbarCollapse').collapse('hide');
+		}
+	});
+});
