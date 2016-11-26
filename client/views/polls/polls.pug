@@ -18,5 +18,5 @@ div
 			tr(ng-switch-default ng-repeat="poll in polls | filter:query")
 				td: a(ui-sref="poll({ id: poll.id })") {{poll.name}}
 				td: a(ui-sref="user({ name: poll.User.name })") {{poll.User.name}}
-				td {{poll.createdAt}}
+				td {{poll.createdAt | date:'medium'}}
 			//-angular filtering here wouldn't work for a large list.

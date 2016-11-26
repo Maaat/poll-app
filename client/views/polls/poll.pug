@@ -6,7 +6,8 @@ div(ng-if="poll")
 				p {{poll.description}}
 				p
 					| Poll created by 
-					a(ui-sref="user({ name: poll.User.name })") {{poll.User.name}}
+					a(ui-sref="user({ name: poll.User.name })") {{poll.User.name}} 
+					| on {{poll.createdAt | date:"MMM d, y 'at' h:mm a"}}
 		.panel-body
 			.row
 				.col-md-10.col-md-offset-1

@@ -2,7 +2,7 @@ div
 	script(id="comment.html",type="text/ng-template")
 		div.panel-heading.clearfix
 			a.pull-left(href="/users/{{comment.User.name}}") {{comment.User.name}}
-			div.pull-right {{comment.createdAt}}
+			div.pull-right {{comment.createdAt | date:'medium'}}
 		div.panel-body
 			p {{comment.text}}
 			button.btn.btn-default(ng-click="comment.replyBox = !comment.replyBox" ng-if="currentUser" ng-show="!comment.replyBox" style="margin-bottom:10px") Reply
